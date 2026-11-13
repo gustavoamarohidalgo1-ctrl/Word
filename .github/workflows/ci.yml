@@ -1,0 +1,19 @@
+name: macOS Build & Tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Swift native tests
+        run: bash test.sh
+      - name: Build & sign OfficeWord.app
+        run: |
+          bash build.sh
+          codesign --verify --deep --strict OfficeWord.app
